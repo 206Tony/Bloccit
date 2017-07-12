@@ -41,4 +41,10 @@
  group :development do
    gem 'listen', '~> 3.1.5'
  end
+
+# add :development, and :test groups b/c want tasks and gens to be ava. in both environments
+ group :development, :test do
+ 	gem 'rspec-rails', '~>3.6.0'
+ 	gem 'rails-controller-testing'
+ end
  
