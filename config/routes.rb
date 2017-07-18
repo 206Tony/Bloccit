@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  
+  resources :advertisements
+  resources :posts
+
   # #1 call resources method and pass it a Symbol
   # instructs rails to create post routes for creating, updating, viewing, and deleting instances of Post.
   resources :posts
