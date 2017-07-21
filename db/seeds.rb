@@ -6,11 +6,21 @@
 
 require 'random_data'
 include RandomData
+
+15.times do
+	Topic.create!(
+		name: RandomData.random_sentence,
+		description: RandomData.random_paragraph
+	)
+end
+topics = Topic.all
+
 #Create Posts
 50.times do 
 
 	# #1 ! instructs method to raise an error if there is a problem with data being seeded
 	Post.create!(
+		topic: topics.sample,
 	# #2 RandomData wishful coding 
 		title: RandomData.random_sentence,
 		body: RandomData.random_paragraph
@@ -46,6 +56,7 @@ Comment.find_or_create_by(post: posts.sample, body: "Also super unique body")
 puts "#{Comment.count}"
 
 puts "Seed finished"
+puts "#{Topic.count} topics created"
 puts "#{Post.count} posts created"
 puts "#{Comment.count} comments created"
 puts "#{Question.count} questions created"
