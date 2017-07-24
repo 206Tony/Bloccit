@@ -40,6 +40,8 @@
  gem 'thor', '0.19.4'
 
  gem 'bootstrap-sass'
+
+ gem 'bcrypt', '~> 3.1.7'
  
  group :development do
    gem 'listen', '~> 3.1.5'
