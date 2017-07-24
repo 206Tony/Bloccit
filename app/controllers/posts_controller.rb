@@ -1,15 +1,4 @@
 class PostsController < ApplicationController
-  #def index
-# #11 declare instance var @posts and assign it a collection of Post objects
-#using all method provided by ActiveRecord. all returns a collection of Post objects
-	#@posts = Post.all
-	#@posts.each_with_index do |post, index|
-		#if index % 5 == 0
-		#	post.title = "SPAM"
-		#end
-	#end
-
-  #end
 
   def show
 # #19 find post with id params passed to show and assign it to @post
@@ -67,8 +56,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-# #8 call destroy on @post. If successful set flash message and redirect the user to the posts index view
-# if it fails then redirect the user to the show view using render :show
+    
     if @post.destroy
       flash[:notice] = "\"#{@post.title}\" was deleted successfully."
       redirect_to @post.topic
