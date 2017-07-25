@@ -41,7 +41,7 @@
 
  gem 'bootstrap-sass'
 
- gem 'bcrypt', '~> 3.1.7'
+ gem 'bcrypt-ruby'
  
  group :development do
    gem 'listen', '~> 3.1.5'
