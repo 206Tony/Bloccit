@@ -1,69 +1,102 @@
 require 'rails_helper'
+include SessionsHelper
 
-# #6 Rspec created test for PC. type: :controller tells RSpec to treat test as a controller test.
-# Allowing simulate controller actions such as HTTP requests
 RSpec.describe PostsController, type: :controller do
-    # #12 create parent topic named my_topic b/c posts will be nested in topics
+  let(:my_user) { User.create!(name: "Bloccit User", email: "user@bloccit.com", password: "helloworld") }
   let(:my_topic) { Topic.create!(name: RandomData.random_sentence, description: RandomData.random_paragraph) }
-  # #13 update how we create my_post so it will belong to my_topic
-  let(:my_post) {my_topic.posts.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph) }
-  # #8 create a post and assign it to my_post using let 
-  #RandomData gives it random title and body
-  #let(:my_post) { Post.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph) }
+  let(:my_post) {my_topic.posts.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: my_user) }
 
-  #describe "GET #index" do
-    #it "returns http success" do
-# #7 Test performs a GET on the index view and expects the response to be a success
+  context "guest user" do
 
-      #get :index
-      #expect(response).to have_http_status(:success)
-    #end
+    describe "GET show" do
+      it "returns http success" do
+        get :show, params: { topic_id: my_topic.id, id: my_post.id }
+        expect(response).to have_http_status(:success)
+      end
 
-    #it "assigns [my_post] to @posts" do
-      #get :index
-# #9 b/c our test created one post (my_post) we expect index to return an array of 1 item
-# assigns a method o fActionController::TestCase
-#assigns gives test action to "instance vars assigned in the action that are avali. for the view"
-      #expect(assigns(:posts)).to eq([my_post])
-    #end
-  #end
+      it "renders the #show view" do
+        get :show, params: { topic_id: my_topic.id, id: my_post.id }
+        expect(response).to render_template :show
+      end
 
-# #10 comment out tests for show, new, and edit until implementation is written
-  describe "GET show" do
+      it "assigns my_post to @post" do
+        get :show, params: { topic_id: my_topic.id, id: my_post.id }
+        expect(assigns(:post)).to eq(my_post)
+      end
+    end
+
+      describe "GET new" do
+        it "returns http redirect" do
+          get :new, params: { topic_id: my_topic.id } 
+          expect(response).to redirect_to(new_session_path)
+        end
+      end
+
+      describe "POST create" do
+        it "returns http redirect" do
+          post :create, params: { topic_id: my_topic.id, post: { title: RandomData.random_sentence, body: RandomData.random_paragraph } }
+          expect(response).to redirect_to(new_session_path)
+        end
+      end
+
+      describe "GET edit" do
+        it "returns http redirect" do
+          get :edit, params: { topic_id: my_topic.id, id: my_post.id }
+          expect(response).to redirect_to(new_session_path)
+        end
+      end
+
+      describe "PUT update" do
+        it "returns http redirect" do
+          new_title = RandomData.random_sentence
+          new_body = RandomData.random_paragraph
+
+          put :update, params: { topic_id: my_topic.id, id: my_post.id, post: { title: new_title, bosy: new_body } }
+          expect(response).to redirect_to(new_session_path)
+        end
+      end
+
+      describe " DELETE destroy" do
+        it "returns http redirect" do 
+          delete :destroy, params: { topic_id: my_topic.id, id: my_post.id }
+          expect(response).to have_http_status(:redirect)
+        end
+      end
+    end
+
+      context "signed-in user" do
+        before do
+          create_session(my_user)
+        end
+
+   describe "GET show" do
     it "returns http success" do
-# #16 pass {id: my_post.id} to show as a parameter which are passed to params hash
       get :show, params: { topic_id: my_topic.id, id: my_post.id }
       expect(response).to have_http_status(:success)
     end
     
     it "renders the #show view" do
-# #17 expect the response to return the show view using the render_template matcher
       get :show, params: { topic_id: my_topic.id, id: my_post.id }
       expect(response).to render_template :show
     end
 
     it "assigns my_post to @post" do
       get :show, params: { topic_id: my_topic.id, id: my_post.id }
-# #18 expect post to = my_post b/c call show with the id my_post
-#testing that post returned is post asked for 
       expect(assigns(:post)).to eq(my_post)
       end
   end
 
-# #1
   describe "GET new" do
     it "returns http success" do
       get :new, params: { topic_id: my_topic.id }
       expect(response).to have_http_status(:success)
     end
 
-# #2
     it "renders the #new view" do
       get :new, params: { topic_id: my_topic.id }
       expect(response).to render_template :new
     end
 
-# #3
     it "instantiates @post" do
       get :new, params: { topic_id: my_topic.id }
       expect(assigns(:post)).not_to be_nil
@@ -71,18 +104,15 @@ RSpec.describe PostsController, type: :controller do
   end
 
   describe "POST create" do
-# #4
     it "increases the number of Post by 1" do
       expect{ post :create, params: { topic_id: my_topic.id, post: { title: RandomData.random_sentence, body: RandomData.random_paragraph } } }.to change(Post,:count).by(1)
     end
 
-  # #5
     it "assigns the new post to @post" do
       post :create, params: { topic_id: my_topic.id, post: { title: RandomData.random_sentence, body: RandomData.random_paragraph } }
       expect(assigns(:post)).to eq Post.last
     end
 
-  # #6
     it "redirects to the new post" do
       post :create, params: { topic_id: my_topic.id, post: { title: RandomData.random_sentence, body: RandomData.random_paragraph } }
       expect(response).to redirect_to [my_topic, Post.last]
@@ -97,11 +127,9 @@ RSpec.describe PostsController, type: :controller do
 
     it "renders the #edit view" do
       get :edit, params: { topic_id: my_topic.id, id: my_post.id }
-# #1 expect edit view to render when a post is edited
       expect(response).to render_template :edit
     end
 
-# #2 test that edit assigns the correct post to be updated to @post
     it "assigns post to be updated to @post" do
       get :edit, params: { topic_id: my_topic.id, id: my_post.id }
       post_instance = assigns(:post)
@@ -118,8 +146,7 @@ RSpec.describe PostsController, type: :controller do
       new_body = RandomData.random_paragraph
 
       put :update, params: { topic_id: my_topic.id, id: my_post.id, post: {title: new_title, body: new_body } }
-# #3 test that @post was updated w/ title and body passed to update
-# and that @post's id wasn't changed
+
       updated_post = assigns(:post)
       expect(updated_post.id).to eq my_post.id
       expect(updated_post.title).to eq new_title
@@ -129,7 +156,7 @@ RSpec.describe PostsController, type: :controller do
     it "redirects to the updated post" do
       new_title = RandomData.random_sentence
       new_body = RandomData.random_paragraph
-# #4 expect to be redirected to the posts show view after the update
+
       put :update, params: { topic_id: my_topic.id, id: my_post.id, post: {title: new_title, body: new_body } }
       expect(response).to redirect_to [my_topic, my_post]
     end
@@ -138,17 +165,14 @@ RSpec.describe PostsController, type: :controller do
   describe "DELETE destroy" do
     it "deletes the post" do
       delete :destroy, params: { topic_id: my_topic.id, id: my_post.id }
-# #6 search db for post w/ id = to my_post.id.returns an Array.
-# assign size of array to count and expect count to = 0
-# this makes sure db won't have a matching post after destroy is called 
       count = Post.where({id: my_post.id}).size 
       expect(count).to eq 0
     end
 
     it "redirects to topic index" do
       delete :destroy, params: { topic_id: my_topic.id, id: my_post.id }
-# #7 expect to be redirected to the posts index view after a post has been deleted.
       expect(response).to redirect_to my_topic
     end
+  end
   end
 end

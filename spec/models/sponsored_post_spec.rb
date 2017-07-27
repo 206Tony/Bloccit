@@ -22,7 +22,7 @@ RSpec.describe SponsoredPost, type: :model do
   	end
 
     it "should respond to price" do
-      expect(sponsored_post),to respond_to(:price)
+      expect(sponsored_post).to respond_to(:price)
     end
   end
 end
