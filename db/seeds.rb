@@ -63,19 +63,29 @@ end
 	)
 end
 
-user = User.first
-user.update_attributes!(
+#create Admin user
+admin = User.create!(
+	name: "Anthony",
 	email: "anthonyzardis@gmail.com",
-	password: 'helloworld'
+	password: "helloworld",
+	role: "admin"
 )
 
-puts "#{Post.count}"
-Post.find_or_create_by(title: "Super unique title", body: "Super unique body")
-puts "#{Post.count}"
+#create a member
+member = User.create!(
+	name: "Kira",
+	email: "kira@bloccit.com",
+	password: 'password'
+)
 
-puts "#{Comment.count}"
-Comment.find_or_create_by(post: posts.sample, body: "Also super unique body")
-puts "#{Comment.count}"
+
+#puts "#{Post.count}"
+#Post.find_or_create_by(title: "Super unique title", body: "Super unique body")
+#puts "#{Post.count}"
+
+#puts "#{Comment.count}"
+#Comment.find_or_create_by(post: posts.sample, body: "Also super unique body")
+#puts "#{Comment.count}"
 
 puts "Seed finished"
 puts "#{User.count} users created"
