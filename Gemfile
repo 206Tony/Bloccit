@@ -42,6 +42,8 @@
  gem 'bootstrap-sass'
 
  gem 'bcrypt', '~> 3.1.7'
+
+ gem 'figaro', '~> 1.0'
  
  group :development do
    gem 'listen', '~> 3.1.5'
