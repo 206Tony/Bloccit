@@ -1,6 +1,28 @@
 require 'random_data'
 include RandomData
 
+#create Admin user
+admin = User.create!(
+	name: "Anthony",
+	email: "anthonyzardis@gmail.com",
+	password: "helloworld",
+	role: "admin"
+)
+
+#create a member
+member = User.create!(
+	name: "Kira",
+	email: "kira@bloccit.com",
+	password: 'password'
+)
+
+moderator = User.create!(
+	name: 'Moderator User',
+	email: "mod@example.com",
+	password: "helloworld",
+	#role: 'moderator'
+)
+
 5.times do
 	User.create!(
 		name: RandomData.random_name, 
@@ -32,15 +54,15 @@ topics = Topic.all
 end
 posts = Post.all
 
-#50.times do 
-#	SponsoredPost.create!(
-#		topic: topics.sample,
-#		title: RandomData.random_sentence, 
-#		body: RandomData.random_paragraph, 
-#		price: 100
-#	)
-#end
-#sponsored_posts = SponsoredPost.all
+50.times do 
+	SponsoredPost.create!(
+		topic: topics.sample,
+		title: RandomData.random_sentence, 
+		body: RandomData.random_paragraph, 
+		price: 100
+	)
+end
+sponsored_posts = SponsoredPost.all
 
 #Create Comments
 100.times do
@@ -59,42 +81,19 @@ end
 	)
 end
 
-#create Admin user
-admin = User.create!(
-	name: "Anthony",
-	email: "anthonyzardis@gmail.com",
-	password: "helloworld",
-	role: "admin"
-)
+puts "#{Post.count}"
+Post.find_or_create_by(title: "Super unique title", body: "Super unique body")
+puts "#{Post.count}"
 
-#create a member
-member = User.create!(
-	name: "Kira",
-	email: "kira@bloccit.com",
-	password: 'password'
-)
-
-moderator = User.create!(
-	name: 'Moderator User',
-	email: "mod@example.com",
-	password: "helloworld",
-	#role: 'moderator'
-)
-
-
-#puts "#{Post.count}"
-#Post.find_or_create_by(title: "Super unique title", body: "Super unique body")
-#puts "#{Post.count}"
-
-#puts "#{Comment.count}"
-#Comment.find_or_create_by(post: posts.sample, body: "Also super unique body")
-#puts "#{Comment.count}"
+puts "#{Comment.count}"
+Comment.find_or_create_by(post: posts.sample, body: "Also super unique body")
+puts "#{Comment.count}"
 
 puts "Seed finished"
 puts "#{User.count} users created"
 puts "#{Topic.count} topics created"
 puts "#{Post.count} posts created"
-#puts "#{SponsoredPost.count} sponsored posts created"
+puts "#{SponsoredPost.count} sponsored posts created"
 puts "#{Comment.count} comments created"
 puts "#{Vote.count} votes created"
 puts "#{Question.count} questions created"

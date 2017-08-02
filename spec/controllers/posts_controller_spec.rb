@@ -121,9 +121,9 @@ RSpec.describe PostsController, type: :controller do
     end
 
     describe "GET edit" do
-      it "returns http redirect" do
+      it "returns a 200 status code" do
         get :edit, params: { topic_id: my_topic.id, id: my_post.id } 
-        expect(response).to redirect_to([my_topic, my_post])
+        expect(response.status).to eq(200)
       end
     end
 
@@ -140,7 +140,7 @@ RSpec.describe PostsController, type: :controller do
     describe "DELETE destroy" do
       it "returns http redirect" do
         delete :destroy, params: { topic_id: my_topic.id, id: my_post.id }
-        expect(response).to redirect_to([my_topic, my_post])
+        expect(response).to redirect_to([my_topic])
       end
     end
   end
