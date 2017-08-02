@@ -1,3 +1,3 @@
-class SponsoredPost < ApplicationRecord
-	belongs_to :topic
-end
+# class SponsoredPost < ApplicationRecord
+# 	belongs_to :topic
+# end

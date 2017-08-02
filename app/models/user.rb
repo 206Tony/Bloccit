@@ -6,7 +6,6 @@ class User < ApplicationRecord
 
 	before_save { self.email = email.downcase } #if email.present? }
 	before_save { self.role ||= :member }
-	#before_save :format_name
 
 	validates :name, length: { minimum: 1, maximum: 100 }, presence: true
 	validates :email, 
@@ -20,18 +19,13 @@ class User < ApplicationRecord
 
 	enum role: [:member, :moderator, :admin]
 
-	#def format_name
-	#	if name
-	#		name_array = []
-	#		name.split.each do |names|
-	#			name_array << names.capitalize
-	#		end
-	#		self.name = name_array.join(" ")
-	#	end
-	#end
-
 	def favorite_for(post)
 		favorites.where(post_id: post.id).first
+	end
+
+	def avatar_url(size)
+		gravatar_id = Digest::MD5::hexdigest(self.email).downcase
+		"http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
 	end
 end
 

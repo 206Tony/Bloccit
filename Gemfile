@@ -54,5 +54,6 @@
  	gem 'rspec-rails', '~>3.6.0'
  	gem 'rails-controller-testing'
  	gem 'shoulda'
+ 	gem 'factory_girl_rails', '~> 4.8.0'
  end
  

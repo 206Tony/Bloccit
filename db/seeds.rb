@@ -1,27 +1,4 @@
 require 'random_data'
-include RandomData
-
-#create Admin user
-admin = User.create!(
-	name: "Anthony",
-	email: "anthonyzardis@gmail.com",
-	password: "helloworld",
-	role: "admin"
-)
-
-#create a member
-member = User.create!(
-	name: "Kira",
-	email: "kira@bloccit.com",
-	password: 'password'
-)
-
-moderator = User.create!(
-	name: 'Moderator User',
-	email: "mod@example.com",
-	password: "helloworld",
-	#role: 'moderator'
-)
 
 5.times do
 	User.create!(
@@ -40,7 +17,6 @@ users = User.all
 end
 topics = Topic.all
 
-#Create Posts
 50.times do 
 	post = Post.create!(
 		user: users.sample,
@@ -54,17 +30,6 @@ topics = Topic.all
 end
 posts = Post.all
 
-50.times do 
-	SponsoredPost.create!(
-		topic: topics.sample,
-		title: RandomData.random_sentence, 
-		body: RandomData.random_paragraph, 
-		price: 100
-	)
-end
-sponsored_posts = SponsoredPost.all
-
-#Create Comments
 100.times do
 	Comment.create!(
 		user: users.sample,
@@ -73,27 +38,22 @@ sponsored_posts = SponsoredPost.all
 	)
 end
 
-100.times do
-	Question.create!(
-		title: RandomData.random_sentence,
-		body: RandomData.random_paragraph, 
-		resolved: false
-	)
-end
+admin = User.create!(
+	name: "Anthony",
+	email: "anthonyzardis@gmail.com",
+	password: "helloworld",
+	role: "admin"
+)
 
-puts "#{Post.count}"
-Post.find_or_create_by(title: "Super unique title", body: "Super unique body")
-puts "#{Post.count}"
-
-puts "#{Comment.count}"
-Comment.find_or_create_by(post: posts.sample, body: "Also super unique body")
-puts "#{Comment.count}"
+member = User.create!(
+	name: "Kira",
+	email: "kira@bloccit.com",
+	password: 'password'
+)
 
 puts "Seed finished"
 puts "#{User.count} users created"
 puts "#{Topic.count} topics created"
 puts "#{Post.count} posts created"
-puts "#{SponsoredPost.count} sponsored posts created"
 puts "#{Comment.count} comments created"
 puts "#{Vote.count} votes created"
-puts "#{Question.count} questions created"

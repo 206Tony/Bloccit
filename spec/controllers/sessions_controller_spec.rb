@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SessionsController, type: :controller do
- 	let(:my_user) { User.create!(name: "Blochead", email: "blochead@bloc.io", password: "password") }
+ 	let(:my_user) { create(:user) }
 
  	describe "GET new" do
  		it "returns http success" do
@@ -38,7 +38,7 @@ RSpec.describe SessionsController, type: :controller do
 
 		it "redirects to the root view" do
 			post :create, params: { session: { email: my_user.email, password: my_user.password } }
-			expect(response).to redirect_to root_path
+			expect(response).to redirect_to(root_path)
 		end
 	end
 
