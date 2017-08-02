@@ -1,7 +1,7 @@
 <div>
 	<%= render partial: 'votes/voting', locals: { post: @post } %>
 	<h1>
-		<%= @post.title %>
+		<%= @post.title %> <br>
 		<small>
 			submitted <%= time_ago_in_words(@post.created_at) %> ago by <%= @post.user.name %>
 		</small>
@@ -39,7 +39,7 @@
 			</div>
 		</h3>
 		<% if current_user %>
-			<%= render partial: 'favorites/favorites', locals: { post: @post } %>
+			<%= render partial: 'favorites/post_favorite', locals: { post: @post } %>
 		<% end %>	
 	</div>
 </div>

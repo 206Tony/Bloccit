@@ -1,9 +1,19 @@
-<% if favorite = current_user.favorite_for(post) %>
-	<%= link_to [post, favorite], class: 'btn btn-danger', method: :delete do %>
-		<i class="glyphicon glyphicon-star-empty"></i>&nbsp; Unfavorite
-	<% end %>
-<% else %>
-	<%= link_to [post, Favorite.new], class: 'btn btn-primary', method: :post do %>
-		<i class='glyphicon glyphicon-star'></i>&nbsp; Favorite
-	<% end %>
-<% end %>
+<% post = Post.find(favorite["post_id"]) %>
+<div class="media">
+	<%= render partial: 'votes/voting', locals: { post: post } %>
+	<div class="media-body">
+		<% avatar_url = post.user.avatar_url(48)
+		<% if avatar_url %>
+			<div class="media-right pull-right">
+				<%= image_tag avatar_url, class: 'media-object' %>
+			</div>
+		<% end %>
+		<h4 class="media-heading">
+			<%= link_to post.title, topic_post_path(post.topic, post) %>
+		</h4>
+		<small>
+			submitted <%= time_ago_in_words(post.created_at) %> ago by <%= post.user.name %> <br>
+			<%= post.comments.count %> Comments
+		</small>
+	</div>
+</div>
